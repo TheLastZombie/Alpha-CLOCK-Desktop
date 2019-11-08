@@ -132,7 +132,7 @@ header {
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
 	body,
 	.download {
 		background-color: #262626;
@@ -140,6 +140,26 @@ header {
 	}
 	.heritage .overlay {
 		background-color: rgba(22, 22, 22, 0.75);
+	}
+	.bx--btn--secondary {
+		background-color: white;
+	}
+	.bx--btn--secondary:hover {
+		background-color: #E0E0E0;
+	}
+	.bx--btn--secondary:focus {
+		border-color: white;
+		outline-color: #262626;
+	}
+	.bx--btn--secondary:active {
+		background-color: #A8A8A8;
+	}
+	.bx--btn--secondary img {
+		filter: none;
+	}
+	.bx--structured-list-row,
+	.bx--structured-list-row.bx--structured-list-row--header-row {
+		border-bottom: 1px solid #525252;
 	}
 	.bx--structured-list-th,
 	.bx--structured-list-td {

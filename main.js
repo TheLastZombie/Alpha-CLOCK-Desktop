@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, shell } = require("electron");
+const { app, BrowserWindow, Tray, Menu, shell } = require("electron");
 const path = require("path");
 var tray = null;
 app.on("ready", function() {
@@ -13,12 +13,23 @@ app.on("ready", function() {
 	tray = new Tray(path.join(__dirname, "images/icon.png"));
 	tray.setToolTip("α CLOCK Desktop");
 	tray.setIgnoreDoubleClickEvents(true);
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			click: function (_menuItem, _browserWindow, _event) {
+				win.show();
+			},
+			label: "Open"
+		},
+		{
+			role: "quit",
+			label: "Exit"
+		}
+	]);
 	tray.on("click", function (_e) {
-		if (win.isVisible()) {
-			win.hide();
-		} else {
-			win.show();
-		};
+		win.show();
+	});
+	tray.on("right-click", function (_e) {
+		tray.popUpContextMenu(contextMenu);
 	});
 	win.loadFile("index.html");
 	win.webContents.on("new-window", function (e, url) {

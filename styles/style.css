@@ -132,3 +132,17 @@ header {
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
+@media (prefers-color-scheme: dark) {
+	body,
+	.download {
+		background-color: #262626;
+		color: white;
+	}
+	.heritage .overlay {
+		background-color: rgba(22, 22, 22, 0.75);
+	}
+	.bx--structured-list-th,
+	.bx--structured-list-td {
+		color: white;
+	}
+}

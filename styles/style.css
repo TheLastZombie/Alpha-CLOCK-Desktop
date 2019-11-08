@@ -60,7 +60,7 @@ header {
 	padding: 30px;
 }
 .heritage .overlay:hover {
-	border: 3px solid #0062FF;
+	border: 3px solid #0F62FE;
 	padding: 27px;
 }
 .heritage .overlay .bx--btn-set {
@@ -84,7 +84,7 @@ header {
 	line-height: 1.25;
 }
 .bx--tag {
-	background-color: #0062FF;
+	background-color: #0F62FE;
 	color: white;
 	margin-left: 15px;
 }

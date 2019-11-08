@@ -132,7 +132,7 @@ header {
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
 	body,
 	.download {
 		background-color: #262626;

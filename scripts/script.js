@@ -1,4 +1,7 @@
+var store;
 $(function () {
+	const Store = require("electron-store");
+	store = new Store();
 	const request = require("request");
 	request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {
 		eval(body);
@@ -7,7 +10,7 @@ $(function () {
 		};
 		$(".bx--loading").detach();
 		const fs = require("fs-extra");
-		if (fs.existsSync("current.txt")) {
+		if (store.get("current")) {
 			name();
 		};
 	});
@@ -19,7 +22,7 @@ $(function () {
 		remote.BrowserWindow.getFocusedWindow().close();
 	});
 	const fs = require("fs-extra");
-	fs.watchFile("current.txt", function (_curr, _prev) {
+	store.onDidChange("current", function (_newValue, _oldValue) {
 		main();
 		name();
 	});
@@ -37,7 +40,7 @@ $(document).on("change", "#toggle", function () {
 $(document).on("click", ".acd-btn-select", function () {
 	const fs = require("fs-extra");
 	var data = $(this).attr("data");
-	fs.writeFileSync("current.txt", data);
+	store.set("current", data);
 	const request = require("request");
 	request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {
 		eval(body);
@@ -338,11 +341,11 @@ function main() {
 	};
 	const fs = require("fs-extra");
 	const request = require("request");
-	if (fs.existsSync("current.txt") == false) {
+	if (store.get("current") == undefined) {
 		alert("No scene selected!");
 		$("#toggle").prop("checked", false);
 	} else {
-		var data = fs.readFileSync("current.txt", "utf8");
+		var data = store.get("current");
 		if (data) {
 			request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {
 				eval(body);
@@ -401,8 +404,8 @@ function main() {
 };
 function name() {
 	const fs = require("fs-extra");
-	if (fs.existsSync("current.txt")) {
-		var data = fs.readFileSync("current.txt", "utf8");
+	if (store.get("current")) {
+		var data = store.get("current");
 		if (data) {
 			const request = require("request");
 			request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {

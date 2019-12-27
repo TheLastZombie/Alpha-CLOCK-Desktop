@@ -31,6 +31,7 @@ Please note that α CLOCK Desktop does not run in the background yet, closing it
 
 ![](images/screenshot-1.png)
 ![](images/screenshot-2.png)
+![](images/screenshot-3.png)
 
 ## License
 

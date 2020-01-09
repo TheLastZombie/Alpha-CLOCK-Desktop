@@ -30,7 +30,7 @@
     "xmlbuilder": "^13.0.2"
   },
   "devDependencies": {
-    "electron": "^7.1.7",
+    "electron": "^7.1.8",
     "electron-builder": "^22.2.0"
   },
   "repository": {

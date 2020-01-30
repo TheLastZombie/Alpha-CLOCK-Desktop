@@ -182,15 +182,15 @@ $(document).on("click", ".dl-link", function () {
 							3,
 							4,
 							5,
-							6
-						],
-						"sunsetImageList": [
+							6,
 							7,
 							8
 						],
-						"nightImageList": [
+						"sunsetImageList": [
 							9,
-							10,
+							10
+						],
+						"nightImageList": [
 							11,
 							12
 						]

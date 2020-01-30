@@ -164,12 +164,12 @@ $(document).on("click", ".dl-link", function () {
 						} else {
 							dataFilesSuccess++;
 							new AdmZip(body).extractAllTo(process.cwd(), true);
-							for (i = 1; i < 10; i++) fs.renameSync(dataResponse.id + "_3840_2160_fp_0" + i + ".jpg", dataResponse.id + "_3840_2160_fp_" + i + ".jpg");
 							callback();
 						};
 					});
 				}, function () {
 					$(".block .description").html("Converting downloaded files to WinDynamicDesktop format...");
+					for (i = 1; i < 10; i++) fs.renameSync(dataResponse.id + "_3840_2160_fp_0" + i + ".jpg", dataResponse.id + "_3840_2160_fp_" + i + ".jpg");
 					var dataConvert = {
 						"displayName": dataResponse.name.en,
 						"imageFilename": dataResponse.id + "_3840_2160_fp_*.jpg",

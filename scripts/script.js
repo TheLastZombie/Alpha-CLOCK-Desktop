@@ -164,6 +164,7 @@ $(document).on("click", ".dl-link", function () {
 						} else {
 							dataFilesSuccess++;
 							new AdmZip(body).extractAllTo(process.cwd(), true);
+							for (i = 1; i < 10; i++) fs.renameSync(dataResponse.id + "_3840_2160_fp_0" + i + ".jpg", dataResponse.id + "_3840_2160_fp_" + i + ".jpg");
 							callback();
 						};
 					});

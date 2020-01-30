@@ -202,8 +202,8 @@ $(document).on("click", ".dl-link", function () {
 					fs.removeSync(dataDirectory);
 					zip.writeZip(sanitize(dataResponse.name.en, {
 						replacement: "_"
-					}) + ".wdd");
-					$(".block .description").html("Finished downloading " + dataResponse.name.en + ". Use <a href='https://www.jetsoncreative.com/windowsdownload/#block-1c40cc266eeb0913f4dc' target='_blank'>WinDynamicDesktop</a> to apply the scene and use it as wallpaper.");
+					}) + ".ddw");
+					$(".block .description").html("Finished downloading " + dataResponse.name.en + ". Use <a href='https://www.jetsoncreative.com/24hourwindows' target='_blank'>WinDynamicDesktop</a> to apply the scene and use it as wallpaper.");
 					$(".acd-btn-return").removeClass("acd-btn-return-disabled");
 					$(".dl-link").removeClass("dl-link-disabled");
 					process.chdir(__dirname);

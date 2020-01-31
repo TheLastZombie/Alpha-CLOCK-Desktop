@@ -9,7 +9,6 @@ $(function () {
 			$("#content").append("<div class='heritage'><div class='overlay'><div class='title'>" + a_clock_heritage_data[i].name.en + (a_clock_heritage_data[i].is_new ? "<span class='bx--tag'>NEW</span>" : "") + "</div><div class='description'>" + a_clock_heritage_data[i].country.en + "</div><div class='bx--btn-set'><button class='acd-btn-select bx--btn bx--btn--primary bx--btn--icon-only' data='" + a_clock_heritage_data[i].id + "'><img src='images/select-off.svg'></button><button class='acd-btn-open bx--btn bx--btn--secondary bx--btn--icon-only' data='" + a_clock_heritage_data[i].id + "'><img src='images/browser.svg'></button><button class='acd-btn-download bx--btn bx--btn--secondary bx--btn--icon-only' data='" + a_clock_heritage_data[i].id + "'><img src='images/download.svg'></button></div></div><img class='preview' src='https://www.sony.net/united/clock/share/img/photo/" + a_clock_heritage_data[i].id + "/fp/" + a_clock_heritage_data[i].thumbnail_default + ".jpg'></div>");
 		};
 		$(".bx--loading").detach();
-		const fs = require("fs-extra");
 		if (store.get("current")) {
 			name();
 		};
@@ -21,7 +20,6 @@ $(function () {
 	$("#close").click(function (_e) {
 		remote.BrowserWindow.getFocusedWindow().close();
 	});
-	const fs = require("fs-extra");
 	store.onDidChange("current", function (_newValue, _oldValue) {
 		main();
 		name();
@@ -38,7 +36,6 @@ $(document).on("change", "#toggle", function () {
 	};
 });
 $(document).on("click", ".acd-btn-select", function () {
-	const fs = require("fs-extra");
 	var data = $(this).attr("data");
 	store.set("current", data);
 	const request = require("request");
@@ -404,7 +401,6 @@ function main() {
 	};
 };
 function name() {
-	const fs = require("fs-extra");
 	if (store.get("current")) {
 		var data = store.get("current");
 		if (data) {

@@ -25,8 +25,6 @@ npm start
 2. Select a scene
 3. Toggle the switch
 
-Please note that α CLOCK Desktop does not run in the background yet, closing it will stop the wallpapers from automatically updating. You can, however, minimize it to the system tray.
-
 ## Screenshots
 
 ![](images/screenshot-1.png)

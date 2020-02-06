@@ -2,7 +2,7 @@
   "name": "alpha-clock-desktop",
   "version": "1.0.0",
   "description": "This application ports the “live” wallpapers of Sony's α CLOCK project to your desktop computer.",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",

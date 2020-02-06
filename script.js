@@ -86,7 +86,16 @@ $(document).on("click", ".dl-link", function () {
 			replacement: "_"
 		}));
 		if (fs.existsSync(dataDirectory)) {
-			alert("Directory already exists!");
+			$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
+				<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
+				<div class="bx--toast-notification__details">
+					<h3 class="bx--toast-notification__title">Directory already exists!</h3>
+					<p class="bx--toast-notification__caption">Please select a different directory.</p>
+				</div>
+				<button data-notification-btn class="bx--toast-notification__close-button">
+					<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+				</button>
+			</div>`);
 			return;
 		};
 		fs.mkdirSync(dataDirectory, {
@@ -318,7 +327,16 @@ $(document).on("click", ".dl-link", function () {
 				});
 				break;
 			default:
-				alert("Error: Unexpected method " + dataMethod + "!");
+				$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--error">
+					<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm-.8 4h1.5v7H9.2V5zm.8 11c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"></path></svg>
+					<div class="bx--toast-notification__details">
+						<h3 class="bx--toast-notification__title">Unexpected method ` + dataMethod + `!</h3>
+						<p class="bx--toast-notification__caption">Please report this error on GitHub. Thank you!</p>
+					</div>
+					<button data-notification-btn class="bx--toast-notification__close-button">
+						<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+					</button>
+				</div>`);
 				$(".block .description").remove();
 				$(".acd-btn-return").removeClass("acd-btn-return-disabled");
 				$(".dl-link").removeClass("dl-link-disabled");
@@ -333,6 +351,9 @@ $(document).on("click", ".acd-btn-return", function () {
 	$(".bx--header__name").show();
 	$(".acd-btn-return").remove();
 });
+$(document).on("click", ".bx--toast-notification__close-button", function () {
+	$(this).parent().remove();
+});
 function main() {
 	if ($("#toggle").prop("checked") == false) {
 		return;
@@ -340,7 +361,16 @@ function main() {
 	const fs = require("fs-extra");
 	const request = require("request");
 	if (store.get("current") == undefined) {
-		alert("No scene selected!");
+		$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
+			<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
+			<div class="bx--toast-notification__details">
+				<h3 class="bx--toast-notification__title">No scene selected!</h3>
+				<p class="bx--toast-notification__caption">Please select a scene and try again.</p>
+			</div>
+			<button data-notification-btn class="bx--toast-notification__close-button">
+				<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+			</button>
+		</div>`);
 		$("#toggle").prop("checked", false);
 	} else {
 		var data = store.get("current");
@@ -349,7 +379,16 @@ function main() {
 				eval(body);
 				var temp = a_clock_heritage_data.filter(x => x.id == data);
 				if (temp.length == 0) {
-					alert("Scene not found!");
+					$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
+						<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
+						<div class="bx--toast-notification__details">
+							<h3 class="bx--toast-notification__title">Scene not found!</h3>
+							<p class="bx--toast-notification__caption">Please check your network connection and try again.</p>
+						</div>
+						<button data-notification-btn class="bx--toast-notification__close-button">
+							<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+						</button>
+					</div>`);
 					$("#toggle").prop("checked", false);
 				} else {
 					var value = Object.values(temp[0].fp).filter(x => x < (new Date().getHours().toString() + new Date().getMinutes().toString()).padStart(4, "0")).sort().slice(-1)[0];
@@ -395,7 +434,16 @@ function main() {
 				};
 			});
 		} else {
-			alert("No scene selected!");
+			$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
+				<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
+				<div class="bx--toast-notification__details">
+					<h3 class="bx--toast-notification__title">No scene selected!</h3>
+					<p class="bx--toast-notification__caption">Please select a scene and try again.</p>
+				</div>
+				<button data-notification-btn class="bx--toast-notification__close-button">
+					<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+				</button>
+			</div>`);
 			$("#toggle").prop("checked", false);
 		};
 	};

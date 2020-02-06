@@ -124,6 +124,13 @@ header {
 	pointer-events: none;
 	filter: grayscale(100%);
 }
+.bx--toast-notification {
+	position: absolute;
+    bottom: 0;
+    margin-bottom: 0;
+	width: 100vw;
+	z-index: 1;
+}
 @keyframes rotate {
 	0% {
 		transform: translate(-50%, -50%) rotate(0deg);

@@ -382,6 +382,7 @@ function main() {
 					</button>
 				</div>`);
 				$("#toggle").prop("checked", false);
+				store.set("enabled", false);
 			} else {
 				var value = Object.values(temp[0].fp).filter(x => x < (new Date().getHours().toString() + new Date().getMinutes().toString()).padStart(4, "0")).sort().slice(-1)[0];
 				if (value == undefined) {
@@ -437,6 +438,7 @@ function main() {
 			</button>
 		</div>`);
 		$("#toggle").prop("checked", false);
+		store.set("enabled", false);
 	};
 };
 function name() {

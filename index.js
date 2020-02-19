@@ -14,7 +14,7 @@ if (!app.requestSingleInstanceLock()) {
 	});
 	app.on("ready", () => {
 		win = new BrowserWindow({
-			width: 1557,
+			width: 1540,
 			height: 932,
 			webPreferences: {
 				nodeIntegration: true

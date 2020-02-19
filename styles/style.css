@@ -125,7 +125,7 @@ header {
 	filter: grayscale(100%);
 }
 .bx--toast-notification {
-	position: absolute;
+	position: fixed;
     bottom: 0;
     margin-bottom: 0;
 	width: 100vw;
@@ -172,4 +172,7 @@ header {
 	.bx--structured-list-td {
 		color: white;
 	}
+}
+::-webkit-scrollbar {
+	display: none;
 }

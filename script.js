@@ -12,6 +12,10 @@ $(function () {
 		if (store.get("current")) {
 			name();
 		};
+		if (store.get("enabled")) {
+			$("#toggle").prop("checked", true);
+			main();
+		};
 	});
 	const { remote } = require("electron");
 	$("#minimize").click(function (_e) {
@@ -26,6 +30,7 @@ $(function () {
 	});
 });
 $(document).on("change", "#toggle", function () {
+	store.set("enabled", this.checked);
 	if (this.checked) {
 		main();
 	} else {
@@ -360,7 +365,67 @@ function main() {
 	};
 	const fs = require("fs-extra");
 	const request = require("request");
-	if (store.get("current") == undefined) {
+	var data = store.get("current");
+	if (data) {
+		request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {
+			eval(body);
+			var temp = a_clock_heritage_data.filter(x => x.id == data);
+			if (temp.length == 0) {
+				$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
+					<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
+					<div class="bx--toast-notification__details">
+						<h3 class="bx--toast-notification__title">Scene not found!</h3>
+						<p class="bx--toast-notification__caption">Please check your network connection and try again.</p>
+					</div>
+					<button data-notification-btn class="bx--toast-notification__close-button">
+						<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
+					</button>
+				</div>`);
+				$("#toggle").prop("checked", false);
+			} else {
+				var value = Object.values(temp[0].fp).filter(x => x < (new Date().getHours().toString() + new Date().getMinutes().toString()).padStart(4, "0")).sort().slice(-1)[0];
+				if (value == undefined) {
+					value = Object.values(temp[0].fp).sort().slice(-1)[0];
+				};
+				request({
+					url: "https://di.update.sony.net/ACLK/wallpaper/" + temp[0].id + "/3840_2160/fp/" + temp[0].id + "_3840_2160_fp_" + Object.keys(temp[0].fp).find(x => temp[0].fp[x] == value) + ".zip",
+					encoding: null
+				}, function (_error, _response, body) {
+					const AdmZip = require("adm-zip");
+					var zip = new AdmZip(body);
+					zip.extractEntryTo(zip.getEntries()[0].entryName, ".", false, true);
+					const wallpaper = require("wallpaper");
+					wallpaper.set(zip.getEntries()[0].entryName).then(function () {
+						fs.unlinkSync(zip.getEntries()[0].entryName);
+					});
+				});
+				const schedule = require("node-schedule");
+				Object.values(schedule.scheduledJobs).map(job => {
+					schedule.cancelJob(job.name);
+				});
+				for (i in temp[0].fp) {
+					if (isNaN(i)) {
+						continue;
+					};
+					j = "https://di.update.sony.net/ACLK/wallpaper/" + temp[0].id + "/3840_2160/fp/" + temp[0].id + "_3840_2160_fp_" + i + ".zip";
+					schedule.scheduleJob(temp[0].fp[i].slice(2) + " " + temp[0].fp[i].slice(0, 2) + " * * *", function (j) {
+						request({
+							url: j,
+							encoding: null
+						}, function (_error, _response, body) {
+							const AdmZip = require("adm-zip");
+							var zip = new AdmZip(body);
+							zip.extractEntryTo(zip.getEntries()[0].entryName, ".", false, true);
+							const wallpaper = require("wallpaper");
+							wallpaper.set(zip.getEntries()[0].entryName).then(function () {
+								fs.unlinkSync(zip.getEntries()[0].entryName);
+							});
+						});
+					}.bind(false, j));
+				};
+			};
+		});
+	} else {
 		$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
 			<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
 			<div class="bx--toast-notification__details">
@@ -372,80 +437,6 @@ function main() {
 			</button>
 		</div>`);
 		$("#toggle").prop("checked", false);
-	} else {
-		var data = store.get("current");
-		if (data) {
-			request("https://www.sony.net/united/clock/assets/js/heritage_data.js", function (_error, _response, body) {
-				eval(body);
-				var temp = a_clock_heritage_data.filter(x => x.id == data);
-				if (temp.length == 0) {
-					$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
-						<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
-						<div class="bx--toast-notification__details">
-							<h3 class="bx--toast-notification__title">Scene not found!</h3>
-							<p class="bx--toast-notification__caption">Please check your network connection and try again.</p>
-						</div>
-						<button data-notification-btn class="bx--toast-notification__close-button">
-							<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
-						</button>
-					</div>`);
-					$("#toggle").prop("checked", false);
-				} else {
-					var value = Object.values(temp[0].fp).filter(x => x < (new Date().getHours().toString() + new Date().getMinutes().toString()).padStart(4, "0")).sort().slice(-1)[0];
-					if (value == undefined) {
-						value = Object.values(temp[0].fp).sort().slice(-1)[0];
-					};
-					request({
-						url: "https://di.update.sony.net/ACLK/wallpaper/" + temp[0].id + "/3840_2160/fp/" + temp[0].id + "_3840_2160_fp_" + Object.keys(temp[0].fp).find(x => temp[0].fp[x] == value) + ".zip",
-						encoding: null
-					}, function (_error, _response, body) {
-						const AdmZip = require("adm-zip");
-						var zip = new AdmZip(body);
-						zip.extractEntryTo(zip.getEntries()[0].entryName, ".", false, true);
-						const wallpaper = require("wallpaper");
-						wallpaper.set(zip.getEntries()[0].entryName).then(function () {
-							fs.unlinkSync(zip.getEntries()[0].entryName);
-						});
-					});
-					const schedule = require("node-schedule");
-					Object.values(schedule.scheduledJobs).map(job => {
-						schedule.cancelJob(job.name);
-					});
-					for (i in temp[0].fp) {
-						if (isNaN(i)) {
-							continue;
-						};
-						j = "https://di.update.sony.net/ACLK/wallpaper/" + temp[0].id + "/3840_2160/fp/" + temp[0].id + "_3840_2160_fp_" + i + ".zip";
-						schedule.scheduleJob(temp[0].fp[i].slice(2) + " " + temp[0].fp[i].slice(0, 2) + " * * *", function (j) {
-							request({
-								url: j,
-								encoding: null
-							}, function (_error, _response, body) {
-								const AdmZip = require("adm-zip");
-								var zip = new AdmZip(body);
-								zip.extractEntryTo(zip.getEntries()[0].entryName, ".", false, true);
-								const wallpaper = require("wallpaper");
-								wallpaper.set(zip.getEntries()[0].entryName).then(function () {
-									fs.unlinkSync(zip.getEntries()[0].entryName);
-								});
-							});
-						}.bind(false, j));
-					};
-				};
-			});
-		} else {
-			$("body").append(`<div data-notification class="bx--toast-notification bx--toast-notification--warning">
-				<svg class="bx--toast-notification__icon" width="20" height="20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm3.5 13.5l-8-8 1-1 8 8-1 1z"></path></svg>
-				<div class="bx--toast-notification__details">
-					<h3 class="bx--toast-notification__title">No scene selected!</h3>
-					<p class="bx--toast-notification__caption">Please select a scene and try again.</p>
-				</div>
-				<button data-notification-btn class="bx--toast-notification__close-button">
-					<svg class="bx--toast-notification__close-icon" width="16" height="16"><path d="M12 4.7l-.7-.7L8 7.3 4.7 4l-.7.7L7.3 8 4 11.3l.7.7L8 8.7l3.3 3.3.7-.7L8.7 8z"></path></svg>
-				</button>
-			</div>`);
-			$("#toggle").prop("checked", false);
-		};
 	};
 };
 function name() {

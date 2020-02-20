@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, shell } = require("electron");
+const { app, BrowserWindow, Tray, Menu, shell, ipcMain } = require("electron");
 const path = require("path");
 var win = null;
 var tray = null;
@@ -26,14 +26,32 @@ if (!app.requestSingleInstanceLock()) {
 		tray.setIgnoreDoubleClickEvents(true);
 		const contextMenu = Menu.buildFromTemplate([
 			{
+				label: "α CLOCK Desktop",
+				enabled: false
+			},
+			{
+				type: "separator"
+			},
+			{
+				click: function (menuItem, _browserWindow, _event) {
+					win.webContents.send("state", menuItem.checked);
+				},
+				label: "Enable service",
+				type: "checkbox",
+				id: "enabled"
+			},
+			{
+				type: "separator"
+			},
+			{
 				click: function (_menuItem, _browserWindow, _event) {
 					win.show();
 				},
-				label: "Open"
+				label: "Restore window"
 			},
 			{
 				role: "quit",
-				label: "Exit"
+				label: "Exit (stops updates)"
 			}
 		]);
 		tray.on("click", function (_e) {
@@ -46,6 +64,9 @@ if (!app.requestSingleInstanceLock()) {
 		win.webContents.on("new-window", function (e, url) {
 			e.preventDefault();
 			shell.openExternal(url);
+		});
+		ipcMain.on("state", (_event, arg) => {
+			contextMenu.getMenuItemById("enabled").checked = arg;
 		});
 	});
 };

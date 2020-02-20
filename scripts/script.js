@@ -15,14 +15,27 @@ $(function () {
 		if (store.get("enabled")) {
 			$("#toggle").prop("checked", true);
 			main();
+			ipcRenderer.send("state", true);
 		};
 	});
-	const { remote } = require("electron");
+	const { remote, ipcRenderer } = require("electron");
 	$("#minimize").click(function (_e) {
 		remote.BrowserWindow.getFocusedWindow().hide();
 	});
 	$("#close").click(function (_e) {
 		remote.BrowserWindow.getFocusedWindow().close();
+	});
+	ipcRenderer.on("state", (_event, message) => {
+		$("#toggle").prop("checked", message);
+		store.set("enabled", message);
+		if (message) {
+			main();
+		} else {
+			const schedule = require("node-schedule");
+			Object.values(schedule.scheduledJobs).map(job => {
+				schedule.cancelJob(job.name);
+			});
+		};
 	});
 	store.onDidChange("current", function (_newValue, _oldValue) {
 		main();
@@ -30,7 +43,9 @@ $(function () {
 	});
 });
 $(document).on("change", "#toggle", function () {
+	const { ipcRenderer } = require("electron");
 	store.set("enabled", this.checked);
+	ipcRenderer.send("state", this.checked);
 	if (this.checked) {
 		main();
 	} else {

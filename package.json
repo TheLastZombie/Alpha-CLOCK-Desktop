@@ -27,7 +27,7 @@
     "request": "^2.88.2",
     "sanitize-filename": "^1.6.3",
     "wallpaper": "^4.4.1",
-    "xmlbuilder": "^15.0.0"
+    "xmlbuilder": "^15.1.0"
   },
   "devDependencies": {
     "electron": "^8.2.0",

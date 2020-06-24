@@ -19,7 +19,7 @@
   "author": "TheLastZombie",
   "license": "MIT",
   "dependencies": {
-    "adm-zip": "^0.4.14",
+    "adm-zip": "^0.4.16",
     "async": "^3.2.0",
     "electron-store": "^5.2.0",
     "fs-extra": "^9.0.1",

@@ -336,11 +336,11 @@ $(document).on("click", ".dl-link", function () {
 						};
 						xml.ele("static")
 							.ele("duration", tn - t).up()
-							.ele("file", dataResponse.id + "_3840_2160_fp_" + i + ".jpg").up();
+							.ele("file", path.join(process.cwd(), dataResponse.id + "_3840_2160_fp_" + i + ".jpg")).up();
 					};
 					xml = xml.end();
 					fs.writeFileSync("timed.xml", xml);
-					$(".block .description").html("Finished downloading " + dataResponse.name.en + ". To apply it, set the generated timed.xml file as wallpaper from the GNOME Tweak Tool.");
+					$(".block .description").html("Finished downloading " + dataResponse.name.en + ". To apply it, set the generated timed.xml file as wallpaper from the GNOME Tweak Tool.<br><br>If you want to move the files to a different directory, remember to update the paths inside the XML file as well.");
 					$(".acd-btn-return").removeClass("acd-btn-return-disabled");
 					$(".dl-link").removeClass("dl-link-disabled");
 					process.chdir(__dirname);
